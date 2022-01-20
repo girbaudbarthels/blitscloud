@@ -1,7 +1,7 @@
 import { getAuth } from "firebase/auth";
 import axios from "axios";
 
-import { useEffect, useState } from "react"
+import { useState } from "react"
 const Home = () => {
     const auth = getAuth()
     const [serverResponse, getResponse] = useState("no response");
@@ -11,27 +11,21 @@ const Home = () => {
 
     })
 
-    useEffect(() => {
-        axios.get("test").then((response) => {
-            console.log(response.data);
-            getResponse(response.data);
-        });
-    }, []);
-
-    const  uploadFile = async () => {
+    const uploadFile = async () => {
         if (pickedFile != undefined) {
-            const uniqueId = "testing"
+            const uniqueId = auth.currentUser.uid;
 
             const formData = new FormData();
             formData.append("uid", uniqueId);
             formData.append("file", pickedFile);
-            
+
             const response = await axios({
                 method: "post",
-                url: "/uploads",
+                url: "/upload-file",
                 data: formData,
                 headers: { "Content-Type": "multipart/form-data" },
-              });
+            });
+            getResponse(response.data.message);
         } else {
             console.log('undefined')
 

@@ -4,6 +4,7 @@ import multer  from 'multer'
 
 import uploadImage from '../api/helpers/helpers.js'
 
+//Init express
 const app = express()
 
 const multerMid = multer({
@@ -19,12 +20,14 @@ app.use(multerMid.single('file'))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 
-app.post('/uploads', async (req, res, next) => {
+//upload a file to the cloud storage bukkit
+app.post('/upload-file', async (req, res, next) => {
   try {
-
+    //The file
     const myFile = req.file
+    //The UID of the user
     const uid = req.body.uid
-    console.log(myFile)
+    //Start uploading the image
     const imageUrl = await uploadImage(myFile, uid)
     res
       .status(200)
@@ -38,6 +41,7 @@ app.post('/uploads', async (req, res, next) => {
   }
 })
 
+
 app.use((err, req, res, next) => {
   res.status(500).json({
     error: err,
@@ -46,12 +50,7 @@ app.use((err, req, res, next) => {
   next()
 })
 
+//Start listening on port 5000
 app.listen(5000, () => {
   console.log('app now listening for requests!!!')
-})
-
-app.get('/test', (req, res) => {
-  
-  res.status(200).send("test succes")
-
 })

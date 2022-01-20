@@ -2,6 +2,7 @@ import Cloud from '@google-cloud/storage'
 import path from 'path'
 const __dirname = path.resolve();
 
+//Get the service key
 const serviceKey = path.join(__dirname, './keys.json')
 
 //Initialize storage connection
