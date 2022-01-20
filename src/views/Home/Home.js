@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState } from "react"
 const Home = () => {
     const auth = getAuth()
-    const [serverResponse, getResponse] = useState("no response");
+    const [serverResponse, getResponse] = useState("");
     const [pickedFile, setFile] = useState();
     const instance = axios.create({
         baseURL: "/",
@@ -26,6 +26,7 @@ const Home = () => {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             getResponse(response.data.message);
+            alert(response.data.message)
         } else {
             console.log('undefined')
 
@@ -34,6 +35,28 @@ const Home = () => {
 
 
     }
+
+    const getFiles = async () => {
+        const uniqueId = auth.currentUser.uid;
+
+        const formData = new FormData();
+        formData.append("uid", uniqueId);
+
+        const response = await axios({
+            method: "post",
+            url: "/get-files",
+            data: formData,
+        });
+        response.data.data.forEach((d) => {
+            console.log(d.name)
+
+        })
+        getResponse(response.data.message);
+    }
+
+
+
+    getFiles();
 
     const changeHandler = (event) => {
         setFile(event.target.files[0]);

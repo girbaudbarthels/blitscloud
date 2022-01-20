@@ -31,4 +31,12 @@ const uploadImage = (file, uid) => new Promise((resolve, reject) => {
         .end(buffer)
 })
 
-export default uploadImage
+//get all files from a user
+async function getFiles(uid) {
+    //Get the files
+    const [files, queryForPage2] = await bucket.getFiles({ autoPaginate: false,});
+    return files;
+
+}
+
+export  { uploadImage, getFiles }

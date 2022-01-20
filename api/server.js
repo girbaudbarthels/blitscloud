@@ -2,7 +2,7 @@ import express from 'express'
 import bodyParser from 'body-parser'
 import multer  from 'multer'
 
-import uploadImage from '../api/helpers/helpers.js'
+import * as helper from '../api/helpers/helpers.js'
 
 //Init express
 const app = express()
@@ -28,13 +28,32 @@ app.post('/upload-file', async (req, res, next) => {
     //The UID of the user
     const uid = req.body.uid
     //Start uploading the image
-    const imageUrl = await uploadImage(myFile, uid)
+    const imageUrl = await helper.uploadImage(myFile, uid)
     res
       .status(200)
       .json({
         message: "Upload was successful",
         data: imageUrl
       })
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+})
+
+//get all files of a user
+app.post('/get-files', async (req, res, next) => {
+  try {
+    //The uid of the user
+    const uid = req.body.uid
+    //Call the getfiles helper function
+    const files = await helper.getFiles(uid);
+    res
+    .status(200)
+    .json({
+      message: "Upload was successful",
+      data: files
+    })
   } catch (error) {
     console.log(error)
     next(error)
