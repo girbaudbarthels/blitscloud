@@ -109,6 +109,7 @@ const Home = () => {
     //sign the user out
     const signUserOut = () => {
         signout(auth);
+        navigate('/login')
     }
 
       //Download specific file

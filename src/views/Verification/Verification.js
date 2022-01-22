@@ -11,17 +11,7 @@ const Verification = () => {
     const state = useSelector(state => state.auth)
     console.log(state);
 
-    
-    const handleSubmit = (event) => {
-        event.preventDefault()
-        const email = event.target.email.value;
-        const password = event.target.password.value;
-        console.log(email)
-        console.log(password)
-        signup(auth, email, password)
-
-    }
-
+    //implement resend mail
     
     return (
         <div>
