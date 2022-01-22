@@ -34,9 +34,17 @@ const uploadImage = (file, uid) => new Promise((resolve, reject) => {
 //get all files from a user
 async function getFiles(uid) {
     //Get the files
-    const [files, queryForPage2] = await bucket.getFiles({ autoPaginate: false,});
+    const [files, queryForPage2] = await bucket.getFiles({ autoPaginate: false, prefix: uid});
     return files;
 
 }
 
-export  { uploadImage, getFiles }
+//download a specific file
+async function downloadFile(fileName, uid) {
+    //Get the file
+    const file = await bucket.file(fileName).download()
+    return file[0];
+
+}
+
+export  { uploadImage, getFiles, downloadFile }

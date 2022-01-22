@@ -1,5 +1,7 @@
-import { SIGNUP_SUCCESS, SIGNUP_ERROR, SIGNIN_SUCCESS, SIGNIN_ERROR } from "./actionTypes";
-import { signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword } from "firebase/auth";
+import { SIGNUP_SUCCESS, SIGNUP_ERROR, SIGNIN_SUCCESS, SIGNIN_ERROR, SIGNIN_VERIFICATION, SIGN_OUT_FAILED, SIGN_OUT_SUCCES } from "./actionTypes";
+import { signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword, getAuth, sendEmailVerification } from "firebase/auth";
+
+//Setup navigator
 
 // Signing up with Firebase
 export const signup = (auth, email, password) => async dispatch => {
@@ -7,28 +9,22 @@ export const signup = (auth, email, password) => async dispatch => {
   try {
 
     createUserWithEmailAndPassword(auth, email, password).then(dataBeforeEmail => {
+      auth.onAuthStateChanged(function (user) {
+        sendEmailVerification(dataBeforeEmail.user)
 
-      onAuthStateChanged(function (user) {
-        user.sendEmailVerification();
       })
     }).then(dataAfterEmail => {
-      onAuthStateChanged(function (user) {
-        if (user.emailVerified) {
-          //Email is verified
-          dispatch({
-            type: SIGNUP_SUCCESS,
-            payload: "Your account was successfully created! Now you need to verify your email."
-          })
-        } else {
-          dispatch({
-            type: SIGNUP_ERROR,
-            payload: "Something went wrong, we couldn't create your account. Please try again."
-          })
-        }
+      auth.onAuthStateChanged(function (user) {
+    
+        dispatch({
+          type: SIGNUP_SUCCESS,
+          payload: "Your account was successfully created! Now you need to verify your email."
+        })
+
       })
     }).catch(function (error) {
       console.log(error)
-
+      alert(error)
       dispatch({
         type: SIGNUP_ERROR,
         payload: "Something went wrong, we couldn't create your account. Please try again."
@@ -36,6 +32,8 @@ export const signup = (auth, email, password) => async dispatch => {
     })
   } catch (err) {
     console.log('err');
+    alert(err)
+
     dispatch({
       type: SIGNUP_ERROR,
       payload: `Something went wrong, we couldn't create your account. Please try again. ${err}`
@@ -44,19 +42,30 @@ export const signup = (auth, email, password) => async dispatch => {
 };
 
 // Signing in with Firebase
-export const signin = (auth, email, password, callback) => async dispatch => {
+export const signin = (auth, email, password, callbackVerified, callbackUnverified) => async dispatch => {
+
   try {
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        console.log("succes");
-        dispatch({
-          type: SIGNIN_SUCCESS,
-          payload: "Login succes"
-        })
-        //callback();
+        if (auth.currentUser.emailVerified == false) {
+          console.log("succes  but not verified ");
+
+          dispatch({
+            type: SIGNIN_VERIFICATION,
+            payload: "Login unsuccesful, user is not verified."
+          })
+        } else {
+          console.log("succes");
+
+          dispatch({
+            type: SIGNIN_SUCCESS,
+            payload: "Login succes"
+          })
+        }
       })
       .catch((error) => {
         console.log(error)
+        alert(error)
 
         dispatch({
           type: SIGNIN_ERROR,
@@ -65,6 +74,25 @@ export const signin = (auth, email, password, callback) => async dispatch => {
       });
   } catch (err) {
     console.log(err)
+    alert(err)
     dispatch({ type: "SIGNIN_ERROR", payload: "Invalid login credentials" });
   }
 };
+
+//Sign the user out
+export const signout = (auth) => async dispatch => { 
+  try {
+    auth.signOut()
+    dispatch({
+      type: SIGN_OUT_SUCCES,
+      payload: "Sign out succesful"
+    });
+
+  } catch (error) {
+    dispatch({
+      type: SIGN_OUT_FAILED,
+      payload: `Something went wrong signing out: ${error}`
+    });
+  }
+
+}

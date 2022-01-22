@@ -23,9 +23,10 @@ const Main = () => {
     isAuthLoaded();
   }
 
+
   return (
     <div>
-      {!loaded ? <div>Loading...</div> : auth.currentUser != null ? <Home /> : <Login />}
+      {!loaded ? <div>Loading...</div> : auth.currentUser != null && auth.currentUser.emailVerified ? <Home /> : <Login />}
     </div>
   );
 };

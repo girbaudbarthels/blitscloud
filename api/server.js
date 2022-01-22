@@ -60,6 +60,27 @@ app.post('/get-files', async (req, res, next) => {
   }
 })
 
+//Download a file
+app.post('/download-file', async (req, res, next) => {
+  try {
+    //filename
+    const fileName = req.body.fileName
+    //The uid of the user
+    const uid = req.body.uid
+    //Call the getfiles helper function
+    const file = await helper.downloadFile(fileName,uid);
+    res
+    .status(200)
+    .json({
+      message: "Download was successful",
+      data: file
+    })
+  } catch (error) {
+    console.log(error)
+    next(error)
+  }
+})
+
 
 app.use((err, req, res, next) => {
   res.status(500).json({
