@@ -5,10 +5,9 @@ import { render } from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import App from "./App";
 
-import { Provider, useSelector } from "react-redux";
+import { Provider } from "react-redux";
 import { rootReducer } from './application/store/';
 
-import { firebaseConfig } from './infrastructure/services/firebase/firebase'
 import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import { createStore, applyMiddleware } from "redux";
 import reduxThunk from "redux-thunk";

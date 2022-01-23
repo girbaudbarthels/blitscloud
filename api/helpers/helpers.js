@@ -36,7 +36,6 @@ async function getFiles(uid) {
     //Get the files
     const [files, queryForPage2] = await bucket.getFiles({ autoPaginate: false, prefix: uid});
     return files;
-
 }
 
 //download a specific file

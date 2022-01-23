@@ -4,6 +4,5 @@ const INITIAL_STATE = {
 
 const authReducer = function (state = INITIAL_STATE, action) {
   return { ...state, authMsg: action.payload, status: action.type };
-
 }
 export default authReducer

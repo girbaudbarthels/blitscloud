@@ -36,7 +36,11 @@ app.post('/upload-file', async (req, res, next) => {
         data: imageUrl
       })
   } catch (error) {
-    console.log(error)
+    res
+    .status(500)
+    .json({
+      message: `Error: ${error}`,
+    })
     next(error)
   }
 })
@@ -55,7 +59,11 @@ app.post('/get-files', async (req, res, next) => {
       data: files
     })
   } catch (error) {
-    console.log(error)
+    res
+    .status(500)
+    .json({
+      message: `Error: ${error}`,
+    })
     next(error)
   }
 })
@@ -76,7 +84,11 @@ app.post('/download-file', async (req, res, next) => {
       data: file
     })
   } catch (error) {
-    console.log(error)
+    res
+    .status(500)
+    .json({
+      message: `Error: ${error}`,
+    })
     next(error)
   }
 })

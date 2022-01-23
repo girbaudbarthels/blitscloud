@@ -21,7 +21,7 @@ const Register = () => {
     }
 
     useEffect(() => {
-        if (state.status == SIGNUP_SUCCESS) {
+        if (state.status === SIGNUP_SUCCESS) {
             navigate('/login')
         }
     })

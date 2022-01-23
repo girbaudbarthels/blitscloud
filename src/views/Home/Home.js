@@ -13,27 +13,24 @@ import {Buffer} from 'buffer';
 
 const Home = () => {
     const auth = getAuth()
-    const [pickedFile, setFile] = useState();
-    const [allFiles, loadFiles] = useState();
-    const instance = axios.create({
-        baseURL: "/",
-
-    })
+    const [file, setFile] = useState();
+    const [files, loadFiles] = useState();
 
     const dispatch = useDispatch();
     const { signout } = bindActionCreators(authActions, dispatch);
+
     const state = useSelector(state => state.auth)
 
     const navigate = useNavigate();
 
     //Upload a file to your google cloud storage
     const uploadFile = async () => {
-        if (pickedFile != undefined) {
+        if (file !== undefined) {
             const uniqueId = auth.currentUser.uid;
 
             const formData = new FormData();
             formData.append("uid", uniqueId);
-            formData.append("file", pickedFile);
+            formData.append("file", file);
 
             const response = await axios({
                 method: "post",
@@ -42,6 +39,7 @@ const Home = () => {
                 headers: { "Content-Type": "multipart/form-data" },
             });
             alert(response.data.message)
+            //Manually add the file to the files state
             getFiles()
         } else {
             console.log('undefined')
@@ -72,16 +70,16 @@ const Home = () => {
 
     //Update the state so all files will be shown after each upload.
     useEffect(() => {
-        if (auth.currentUser == undefined) {
+        if (auth.currentUser === undefined) {
             console.log('dis')
             navigate('/')
-        } else {
-            if (allFiles === undefined) {
-                getFiles()
-            }
-            if (state.status === SIGN_OUT_SUCCES) {
-                navigate('/login')
-            }
+            return;
+        } 
+        if (files === undefined) {
+            getFiles()
+        }
+        if (state.status === SIGN_OUT_SUCCES) {
+            navigate('/login')
         }
 
     })
@@ -114,8 +112,6 @@ const Home = () => {
 
       //Download specific file
       const downloadFile = async (fileName) => {
-        console.log('download file')
-
         const uniqueId = auth.currentUser.uid;
 
         const formData = new FormData();
@@ -138,11 +134,11 @@ const Home = () => {
             <input type="file" name="file" onChange={changeHandler} />
             <button onClick={uploadFile}>Submit</button>
 
-            {allFiles != undefined &&
+            {files !== undefined &&
                 <div>
                     <h3>Files</h3>
                     <ul>
-                        {allFiles.map((d, i) =>
+                        {files.map((d, i) =>
 
                             renderFiles(d, i)
 

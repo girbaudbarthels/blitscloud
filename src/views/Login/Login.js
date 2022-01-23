@@ -23,8 +23,6 @@ const Login = () => {
 
     //Listen to changes in the state,
     useEffect(() => {
-        console.log(state.status)
-
         switch (state.status) {
             case SIGNIN_VERIFICATION:
                 navigate('/verification')

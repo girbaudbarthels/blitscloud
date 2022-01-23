@@ -1,5 +1,5 @@
 import { SIGNUP_SUCCESS, SIGNUP_ERROR, SIGNIN_SUCCESS, SIGNIN_ERROR, SIGNIN_VERIFICATION, SIGN_OUT_FAILED, SIGN_OUT_SUCCES } from "./actionTypes";
-import { signInWithEmailAndPassword, onAuthStateChanged, createUserWithEmailAndPassword, getAuth, sendEmailVerification } from "firebase/auth";
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
 
 //Setup navigator
 
@@ -42,12 +42,11 @@ export const signup = (auth, email, password) => async dispatch => {
 };
 
 // Signing in with Firebase
-export const signin = (auth, email, password, callbackVerified, callbackUnverified) => async dispatch => {
+export const signin = (auth, email, password) => async dispatch => {
 
-  try {
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        if (auth.currentUser.emailVerified == false) {
+        if (auth.currentUser.emailVerified === false) {
           console.log("succes  but not verified ");
 
           dispatch({
@@ -72,11 +71,7 @@ export const signin = (auth, email, password, callbackVerified, callbackUnverifi
           payload: "Invalid login credentials"
         });
       });
-  } catch (err) {
-    console.log(err)
-    alert(err)
-    dispatch({ type: "SIGNIN_ERROR", payload: "Invalid login credentials" });
-  }
+
 };
 
 //Sign the user out
