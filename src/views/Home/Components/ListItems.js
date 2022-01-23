@@ -22,7 +22,7 @@ const downloadFile = async (fileName) => {
         url: "/download-file",
         data: formData,
     });
-    download(Buffer.from(response.data.data.data, "utf-8"), fileName)
+    download(Buffer.from(response.data.data.data, "utf-8"), fileName.replace(`${uniqueId}/`, ''))
 }
 
 
@@ -50,7 +50,6 @@ const RenderFiles = (props) => {
     return (
         <div>
             {files.map((d, i) =>
-                // renderFiles(d, i)
                 <li key={i}>{d.name.replace(`${uid}/`, '')} | uploaded: {dateFormatter(d.metadata.timeCreated)} | size: {formatBytes(Number(d.metadata.size))} | <button onClick={() => { downloadFile(d.name) }}>Download file</button></li>
             )}
         </div>

@@ -22,7 +22,7 @@ const uploadFile = (file, uid) => new Promise((resolve, reject) => {
             `https://storage.googleapis.com/${bucket.name}/${blob.name}`
         //Put the data of the file in an object that can be returned to our FE
         const data = {
-            name: newFileName,
+            name: `${uid}/${newFileName}`,
             metadata: {
                 timeCreated: Date(),
                 size: file.size
@@ -48,7 +48,7 @@ async function getFiles(uid) {
 //download a specific file
 async function downloadFile(fileName, uid) {
     //Get the file
-    const file = await bucket.file(`${uid}/${fileName}`).download()
+    const file = await bucket.file(`${fileName}`).download()
     return file[0];
 
 }
