@@ -4,7 +4,7 @@ import { useDispatch, useSelector, } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { authActions } from "../../application/store/actions";
-import { SIGNUP_SUCCESS } from "../../application/store/actions/actionTypes";
+import { SIGNUP_SUCCESS } from "../../application/store/action-types/auth-types";
 const Register = () => {
     const auth = getAuth();
     const dispatch = useDispatch();

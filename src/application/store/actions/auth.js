@@ -1,7 +1,5 @@
-import { SIGNUP_SUCCESS, SIGNUP_ERROR, SIGNIN_SUCCESS, SIGNIN_ERROR, SIGNIN_VERIFICATION, SIGN_OUT_FAILED, SIGN_OUT_SUCCES } from "./actionTypes";
+import { SIGNUP_SUCCESS, SIGNUP_ERROR, SIGNIN_SUCCESS, SIGNIN_ERROR, SIGNIN_VERIFICATION, SIGN_OUT_FAILED, SIGN_OUT_SUCCES } from "../action-types/auth-types";
 import { signInWithEmailAndPassword, createUserWithEmailAndPassword, sendEmailVerification } from "firebase/auth";
-
-//Setup navigator
 
 // Signing up with Firebase
 export const signup = (auth, email, password) => async dispatch => {

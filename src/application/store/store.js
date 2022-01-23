@@ -3,11 +3,13 @@ import { firebaseReducer } from "react-redux-firebase";
 
 
 import authReducer from "./reducers/auth"
-// Add firebase to reducers
+import uploadReducer from "./reducers/upload";
+
+// Combine the reducers
 export const rootReducer = combineReducers({
     firebase: firebaseReducer,
-    auth: authReducer
+    auth: authReducer,
+    upload: uploadReducer
 })
 
-// Create store with reducers and initial state
 

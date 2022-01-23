@@ -3,7 +3,7 @@ import gc from '../config/index.js'
 const bucket = gc.bucket('blitscloud') // should be your bucket name
 
 //Function that will upload the image to the bucket
-const uploadImage = (file, uid) => new Promise((resolve, reject) => {
+const uploadFile = (file, uid) => new Promise((resolve, reject) => {
     //import name and buffer from the file
     const { originalname, buffer } = file
     //format the filename
@@ -20,8 +20,17 @@ const uploadImage = (file, uid) => new Promise((resolve, reject) => {
         //Format the public url
         const publicUrl =
             `https://storage.googleapis.com/${bucket.name}/${blob.name}`
-        //
-        resolve(publicUrl)
+        //Put the data of the file in an object that can be returned to our FE
+        const data = {
+            name: newFileName,
+            metadata: {
+                timeCreated: Date(),
+                size: file.size
+            } 
+        }
+
+        console.log(data)
+        resolve(data)
     })
         .on('error', (e) => {
             //Something went wrong
@@ -40,10 +49,11 @@ async function getFiles(uid) {
 
 //download a specific file
 async function downloadFile(fileName, uid) {
+    console.log('4')
     //Get the file
-    const file = await bucket.file(fileName).download()
+    const file = await bucket.file(`${uid}/${fileName}`).download()
     return file[0];
 
 }
 
-export  { uploadImage, getFiles, downloadFile }
+export  { uploadFile, getFiles, downloadFile }

@@ -28,7 +28,7 @@ app.post('/upload-file', async (req, res, next) => {
     //The UID of the user
     const uid = req.body.uid
     //Start uploading the image
-    const imageUrl = await helper.uploadImage(myFile, uid)
+    const imageUrl = await helper.uploadFile(myFile, uid)
     res
       .status(200)
       .json({
@@ -76,7 +76,7 @@ app.post('/download-file', async (req, res, next) => {
     //The uid of the user
     const uid = req.body.uid
     //Call the getfiles helper function
-    const file = await helper.downloadFile(fileName,uid);
+    const file = await helper.downloadFile(fileName, uid);
     res
     .status(200)
     .json({

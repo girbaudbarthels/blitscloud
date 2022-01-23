@@ -4,7 +4,7 @@ import { useDispatch, useSelector, } from "react-redux";
 import { bindActionCreators } from "redux";
 import { authActions } from "../../application/store/actions";
 import { useNavigate } from "react-router-dom"
-import { SIGNIN_SUCCESS, SIGNIN_VERIFICATION } from "../../application/store/actions/actionTypes";
+import { SIGNIN_SUCCESS, SIGNIN_VERIFICATION } from "../../application/store/action-types/auth-types";
 
 const Login = () => {
     const auth = getAuth();
