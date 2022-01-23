@@ -104,5 +104,4 @@ app.use((err, req, res, next) => {
 
 //Start listening on port 5000
 app.listen(5000, () => {
-  console.log('app now listening for requests!!!')
 })

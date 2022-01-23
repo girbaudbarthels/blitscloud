@@ -21,7 +21,6 @@ export const signup = (auth, email, password) => async dispatch => {
 
       })
     }).catch(function (error) {
-      console.log(error)
       alert(error)
       dispatch({
         type: SIGNUP_ERROR,
@@ -29,7 +28,6 @@ export const signup = (auth, email, password) => async dispatch => {
       })
     })
   } catch (err) {
-    console.log('err');
     alert(err)
 
     dispatch({
@@ -45,15 +43,12 @@ export const signin = (auth, email, password) => async dispatch => {
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         if (auth.currentUser.emailVerified === false) {
-          console.log("succes  but not verified ");
 
           dispatch({
             type: SIGNIN_VERIFICATION,
             payload: "Login unsuccesful, user is not verified."
           })
         } else {
-          console.log("succes");
-
           dispatch({
             type: SIGNIN_SUCCESS,
             payload: "Login succes"
@@ -61,7 +56,6 @@ export const signin = (auth, email, password) => async dispatch => {
         }
       })
       .catch((error) => {
-        console.log(error)
         alert(error)
 
         dispatch({

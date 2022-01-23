@@ -5,7 +5,6 @@ const INITIAL_STATE = {
 };
 
 const uploadReducer = function (state = INITIAL_STATE, action) {
-  console.log(state)
   if ([UPLOAD_FAILED, UPLOAD_IN_PROGRESS].includes(action.type)) {
     return { ...state, uploadMsg: action.payload, status: action.type};
   } else if (action.type === UPLOAD_SUCCES) {

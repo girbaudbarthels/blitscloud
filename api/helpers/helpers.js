@@ -29,12 +29,10 @@ const uploadFile = (file, uid) => new Promise((resolve, reject) => {
             } 
         }
 
-        console.log(data)
         resolve(data)
     })
         .on('error', (e) => {
             //Something went wrong
-            console.log(e)
             reject(`Unable to upload image, something went wrong`)
         })
         .end(buffer)
@@ -49,7 +47,6 @@ async function getFiles(uid) {
 
 //download a specific file
 async function downloadFile(fileName, uid) {
-    console.log('4')
     //Get the file
     const file = await bucket.file(`${uid}/${fileName}`).download()
     return file[0];

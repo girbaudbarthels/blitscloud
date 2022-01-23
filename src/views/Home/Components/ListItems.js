@@ -11,7 +11,6 @@ import { dateFormatter } from "../../../application/utils/dateformatter";
 //Download specific file
 const downloadFile = async (fileName) => {
     const auth = getAuth()
-console.log(fileName)
     const uniqueId = auth.currentUser.uid;
 
     const formData = new FormData();
@@ -23,8 +22,6 @@ console.log(fileName)
         url: "/download-file",
         data: formData,
     });
-
-    console.log(response.data.data.data)
     download(Buffer.from(response.data.data.data, "utf-8"), fileName)
 }
 

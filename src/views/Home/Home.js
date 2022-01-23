@@ -21,15 +21,11 @@ const Home = () => {
 
     const state = useSelector(state => state.auth)
 
-    console.log('state')
-
+    //Init navigation
     const navigate = useNavigate();
-
 
     //Get all the files in your google cloud storage
     const getFiles = async () => {
-        console.log('Getfiles')
-
         const uniqueId = auth.currentUser.uid;
 
         const formData = new FormData();
@@ -40,7 +36,6 @@ const Home = () => {
             url: "/get-files",
             data: formData,
         });
-        console.log(response.data.data[0].metadata)
         loadFiles(response.data.data)
     }
 
@@ -59,6 +54,7 @@ const Home = () => {
 
     })
 
+    //Put the selected file into the file state
     const changeHandler = (event) => {
         setFile(event.target.files[0]);
     };
