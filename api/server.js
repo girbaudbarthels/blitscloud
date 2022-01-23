@@ -76,12 +76,37 @@ app.post('/download-file', async (req, res, next) => {
     //The uid of the user
     const uid = req.body.uid
     //Call the getfiles helper function
-    const file = await helper.downloadFile(fileName, uid);
+    const file = await helper.downloadFile(fileName);
     res
     .status(200)
     .json({
       message: "Download was successful",
       data: file
+    })
+  } catch (error) {
+    res
+    .status(500)
+    .json({
+      message: `Error: ${error}`,
+    })
+    next(error)
+  }
+})
+
+//Delete a file
+app.post('/delete-file', async (req, res, next) => {
+  try {
+    //filename
+    const fileName = req.body.fileName
+    //The uid of the user
+    const uid = req.body.uid
+    //Call the getfiles helper function
+    const file = await helper.removeFile(fileName);
+    res
+    .status(200)
+    .json({
+      message: `The deletion of the file ${fileName} was successful`,
+      data: fileName
     })
   } catch (error) {
     res

@@ -46,11 +46,18 @@ async function getFiles(uid) {
 }
 
 //download a specific file
-async function downloadFile(fileName, uid) {
+async function downloadFile(fileName) {
     //Get the file
     const file = await bucket.file(`${fileName}`).download()
     return file[0];
 
+}
+
+//remove a specific file
+async function removeFile(fileName) {
+    //Delete the file
+    const file = await bucket.file(`${fileName}`).delete()
+    return file[0];
 }
 
 export  { uploadFile, getFiles, downloadFile }
