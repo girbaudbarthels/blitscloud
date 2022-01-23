@@ -24,6 +24,21 @@ const Home = () => {
     //Init navigation
     const navigate = useNavigate();
 
+        //Update the state so all files will be shown after each upload.
+        useEffect(() => {
+            if (auth.currentUser === null) {
+                navigate('/')
+                return;
+            }
+            if (files === undefined) {
+                getFiles()
+            }
+            if (state.status === SIGN_OUT_SUCCES) {
+                navigate('/login')
+            }
+    
+        })
+
     //Get all the files in your google cloud storage
     const getFiles = async () => {
         const uniqueId = auth.currentUser.uid;
@@ -38,21 +53,6 @@ const Home = () => {
         });
         loadFiles(response.data.data)
     }
-
-    //Update the state so all files will be shown after each upload.
-    useEffect(() => {
-        if (auth.currentUser === undefined) {
-            navigate('/')
-            return;
-        }
-        if (files === undefined) {
-            getFiles()
-        }
-        if (state.status === SIGN_OUT_SUCCES) {
-            navigate('/login')
-        }
-
-    })
 
     //Put the selected file into the file state
     const changeHandler = (event) => {
