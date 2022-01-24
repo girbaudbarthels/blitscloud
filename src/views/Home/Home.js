@@ -1,22 +1,23 @@
 import { getAuth } from "firebase/auth";
 import axios from "axios";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { bindActionCreators } from "redux";
-import { authActions, uploadActions } from "../../application/store/actions";
+import { uploadActions } from "../../application/store/actions";
 import { SIGN_OUT_SUCCES } from "../../application/store/action-types/auth-types";
 import { useNavigate } from "react-router-dom";
 
 import RenderFiles from "./Components/ListItems";
 
+import { Button, Row, Col, Container,  } from "react-bootstrap"
+import Sidebar from "./Components/Sidebar";
+import './Home.scss'
 const Home = () => {
     const auth = getAuth()
-    const [file, setFile] = useState();
     const [files, loadFiles] = useState();
 
     const dispatch = useDispatch();
-    const { signout } = bindActionCreators(authActions, dispatch);
     const { uploadFile } = bindActionCreators(uploadActions, dispatch);
 
     const state = useSelector(state => state.auth)
@@ -24,20 +25,20 @@ const Home = () => {
     //Init navigation
     const navigate = useNavigate();
 
-        //Update the state so all files will be shown after each upload.
-        useEffect(() => {
-            if (auth.currentUser === null) {
-                navigate('/')
-                return;
-            }
-            if (files === undefined) {
-                getFiles()
-            }
-            if (state.status === SIGN_OUT_SUCCES) {
-                navigate('/login')
-            }
-    
-        })
+    //Update the state so all files will be shown after each upload.
+    useEffect(() => {
+        if (auth.currentUser === null) {
+            navigate('/')
+            return;
+        }
+        if (files === undefined) {
+            getFiles()
+        }
+        if (state.status === SIGN_OUT_SUCCES) {
+            navigate('/login')
+        }
+
+    })
 
     //Get all the files in your google cloud storage
     const getFiles = async () => {
@@ -55,35 +56,38 @@ const Home = () => {
     }
 
     //Put the selected file into the file state
-    const changeHandler = (event) => {
-        setFile(event.target.files[0]);
+    const changeHandler = async (event) => {
+        uploadFile(event.target.files[0], auth.currentUser.uid)
     };
 
-    //sign the user out
-    const signUserOut = () => {
-        signout(auth);
-        navigate('/login')
-    }
+    const inputFile = useRef(null)
+
+    const onButtonClick = () => {
+        // `current` points to the mounted file input element
+        inputFile.current.click();
+    };
 
     return (
-        <div>
+        <Container fluid >
+            <Row>
+                <Sidebar></Sidebar>
 
-            <button onClick={signUserOut} >Sign out</button>
-            <input type="file" name="file" onChange={changeHandler} />
-            <button onClick={() => { uploadFile(file, auth.currentUser.uid) }}>Submit</button>
+                <Col className="home">
+                    <input type="file" name="file" onChange={changeHandler} style={{ display: 'none' }} ref={inputFile} />
 
-            {files !== undefined &&
-                <div>
-                    <h3>Files</h3>
-                    <ul>
-                        
+                    {files !== undefined &&
+                        <div>
+                            <Row className="justify-content-between" fluid={false}>
+                                <h3 className="buttonWidth">My files</h3>
+                                <Button className="buttonWidth" variant="primary" onClick={onButtonClick}>Upload file</Button>
+                            </Row>
                             <RenderFiles files={files}></RenderFiles>
-                      
-                    </ul>
-                </div>
+                        </div>
+                    }
+                </Col>
 
-            }
-        </div>
+            </Row>
+        </Container>
     );
 }
 

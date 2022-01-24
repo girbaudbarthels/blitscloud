@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 import { UPLOAD_SUCCES } from "../../../application/store/action-types/upload-types";
 import { dateFormatter } from "../../../application/utils/dateformatter";
+import { Container, Button, Row, Col } from "react-bootstrap"
+import './ListItems.scss'
 
 //Download specific file
 const downloadFile = async (fileName) => {
@@ -24,6 +26,8 @@ const downloadFile = async (fileName) => {
     });
     download(Buffer.from(response.data.data.data, "utf-8"), fileName.replace(`${uniqueId}/`, ''))
 }
+
+
 
 
 //render files in listItems
@@ -45,13 +49,50 @@ const RenderFiles = (props) => {
 
     files.sort(function (a, b) {
         return new Date(b.metadata.timeCreated) - new Date(a.metadata.timeCreated)
-    })    
+    })
+
+    const deleteFile = async (fileName) => {
+        const auth = getAuth()
+        const formData = new FormData();
+        formData.append("file", fileName);
+    
+        const response = await axios({
+            method: "post",
+            url: "/delete-file",
+            data: formData,
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+        let updatedFiles = [];
+        for (let index = 0; index < files.length; index++) {
+            const element = files[index];
+            console.log(element.metadata.name)
+            if (element.metadata.name !== fileName) {
+                updatedFiles = [...updatedFiles, element]
+            }
+            
+        }
+        alert(response.data.message)
+        setFiles(updatedFiles)
+        
+    }
 
     return (
         <div>
-            {files.map((d, i) =>
-                <li key={i}>{d.name.replace(`${uid}/`, '')} | uploaded: {dateFormatter(d.metadata.timeCreated)} | size: {formatBytes(Number(d.metadata.size))} | <button onClick={() => { downloadFile(d.name) }}>Download file</button></li>
-            )}
+            <Container fluid>
+                {files.map((d, i) =>
+                    <Row key={i} className={i % 2 != 0 ? "align-items-center item-row" : "align-items-center item-row-uneven"}>
+                        <Col xs="4" style={{ overflow: "hidden" }}><b>{d.name.replace(`${uid}/`, '')}</b></Col>
+                        <Col xs="2">{dateFormatter(d.metadata.timeCreated)}</Col>
+                        <Col xs="2"><b>{formatBytes(Number(d.metadata.size))}</b></Col>
+                        <Col>
+                            <Button variant="outline-secondary" onClick={() => { downloadFile(d.name) }}>Download</Button>
+                        </Col>
+                        <Col>
+                        <p onClick={()=>{deleteFile(d.name)}}>Delete</p>
+                        </Col>
+                    </Row>
+                )}
+            </Container>
         </div>
     )
 }

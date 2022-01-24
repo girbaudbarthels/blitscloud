@@ -12,6 +12,7 @@ import { ReactReduxFirebaseProvider } from "react-redux-firebase";
 import { createStore, applyMiddleware } from "redux";
 import reduxThunk from "redux-thunk";
 
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 const store = createStore(rootReducer, {}, applyMiddleware(reduxThunk))
 // react-redux-firebase config

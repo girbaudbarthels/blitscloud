@@ -5,6 +5,7 @@ import Login from "./views/Login/Login";
 import Register from "./views/Register/Register"
 import Home from "./views/Home/Home";
 import Verification from "./views/Verification/Verification";
+import './App.css'
 
 const App = () => {
   return (

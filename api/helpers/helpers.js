@@ -57,7 +57,8 @@ async function downloadFile(fileName) {
 async function removeFile(fileName) {
     //Delete the file
     const file = await bucket.file(`${fileName}`).delete()
+
     return file[0];
 }
 
-export  { uploadFile, getFiles, downloadFile }
+export  { uploadFile, getFiles, downloadFile, removeFile }

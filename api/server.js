@@ -97,15 +97,13 @@ app.post('/download-file', async (req, res, next) => {
 app.post('/delete-file', async (req, res, next) => {
   try {
     //filename
-    const fileName = req.body.fileName
-    //The uid of the user
-    const uid = req.body.uid
+    const fileName = req.body.file
     //Call the getfiles helper function
     const file = await helper.removeFile(fileName);
     res
     .status(200)
     .json({
-      message: `The deletion of the file ${fileName} was successful`,
+      message: `The deletion of the file:  ${fileName} was successful`,
       data: fileName
     })
   } catch (error) {
